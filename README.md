@@ -20,7 +20,6 @@ As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where 
 
 _Our first nonfunctioning draft._
 <br>
-
-##D3 Examples we're fond of
-- https://observablehq.com/@d3/smooth-zooming
-- http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774
+## D3 Examples We're Fond Of
+- https://observablehq.com/@d3/smooth-zooming  (Smooth Zooming)
+- http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774  (Mouse Events)
