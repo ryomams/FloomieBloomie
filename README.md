@@ -17,4 +17,4 @@ As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where 
 
 ![FloomieBloomie Draft 1](https://github.com/ryomams/FloomieBloomie/blob/main/Draft2.PNG?raw=true)
 
->_Our first nonfunctioning draft._
+_Our first nonfunctioning draft._
