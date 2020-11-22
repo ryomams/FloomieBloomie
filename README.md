@@ -22,3 +22,4 @@ _Our first nonfunctioning draft._
 
 ##D3 Examples we're fond of
 - https://observablehq.com/@d3/smooth-zooming
+- http://bl.ocks.org/WilliamQLiu/76ae20060e19bf42d774
