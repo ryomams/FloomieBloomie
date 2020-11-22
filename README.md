@@ -13,7 +13,8 @@ Each petal represents an activity, which each have `significance-lvl`, `mood`, a
 <br>
 As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where users can log their daily activities, but this project will serve only as a prototype for our flower visualization.
 <br>
+<br>
 
 ![FloomieBloomie Draft 1](https://github.com/ryomams/FloomieBloomie/blob/main/Draft2.PNG?raw=true)
 
->_Our first draft._
+>_Our first nonfunctioning draft._
