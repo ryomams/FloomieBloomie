@@ -19,6 +19,7 @@ As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where 
 ![FloomieBloomie Draft 1](https://github.com/ryomams/FloomieBloomie/blob/main/Draft2.PNG?raw=true)
 
 _Our first nonfunctioning draft._
+<br>
 
 ##D3 Examples we're fond of
 - https://observablehq.com/@d3/smooth-zooming
