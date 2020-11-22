@@ -9,7 +9,7 @@ Each `flower`, which represent a day, is made up of `petals`, which each represe
 - `mood` is a rating, 0-4, of how a user felt about that activity. (4 is elated, 2 is neutral, and 0 is awful.) This is represented in each petal's color.
 - `notes` are the user's notes on that activity. This is displayed in a small box to the side of the flower.<br><br>
 >Typically, mood tracking apps use traditional charts (ie. bar graphs, line graphs) to visualize how one's mood might fluctuate over time. Unfortunately, the use of number-oriented graphs inherently imply a new high or low score to be reached with one's mood.
->By using our radial flower chart, users can see their entire logged day without the obligation of comparison. Your daily flower is unique to that day-- and there is no obligation to make it look any particular way.
+>By using our radial flower chart, users can see their entire logged day without the obligation of comparison. Your daily flower is unique to that day-- and there is no need to make it look any particular way.
 <br>
 As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where users can log their daily activities, but this project will serve only as a prototype for our flower visualization.
 <br>
