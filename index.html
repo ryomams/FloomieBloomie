@@ -2,11 +2,38 @@
 <html lang="en">
 <head>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="index.js"></script>
+    <!-- <script src="index.js"></script> -->
     <title>FloomieBloomie</title>
 </head>
 <body>
-    <p>If you're reading this, it's too late</p>
-    <img src="Draft2.PNG" />
+    <script>
+        const svg = d3.select("body").append("svg")
+            .attr("width", 900)
+            .attr("height", 900)
+            .style("background-color", "#CCC");
+        
+        const circle_Bound = svg.append("circle")
+            .attr("fill", "#AAA")
+            .attr("cx", 450)
+            .attr("cy", 450)
+            .attr("r", 300);
+
+
+        const circle = svg.append("circle")
+            .attr("fill", "#FFD479")
+            .attr("stroke-width", 3)
+            .attr("stroke", "#000")
+            .attr("cx", 450)
+            .attr("cy", 450)
+            .attr("r", 50);
+
+        /*const text_Date = svg.append("text")
+            .attr("x", 400)
+            .attr("y", 300)
+            .attr*/
+
+    
+
+    </script>
 </body>
 </html>
