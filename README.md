@@ -1,5 +1,6 @@
 # FloomieBloomie
-Log your days in a garden of flowers. Made for UCSC's CMPM 35.
+Log your days in a garden of flowers. Made for UCSC's CMPM 35.<br>
+By Ryoma Marta-Sugawara and Nishant Suria. 
 
 ## Our Intentions & Goals
 
@@ -18,3 +19,6 @@ As a stretch goal, we hope to turn FloomieBloomie into a full-fledged app where 
 ![FloomieBloomie Draft 1](https://github.com/ryomams/FloomieBloomie/blob/main/Draft2.PNG?raw=true)
 
 _Our first nonfunctioning draft._
+
+##D3 Examples we're fond of
+- https://observablehq.com/@d3/smooth-zooming
