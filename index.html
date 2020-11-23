@@ -108,7 +108,9 @@
             .attr("cx", 300 + 150)
             .attr("cy", 300)
             .attr("r", 300)
-            .on("mouseover", printDumbShit());
+            .on("mouseover", printDumbShit);
+        
+        //svg.select(circle_Bound).on("mouseover", printDumbShit);
 
         let circle = svg.append("circle")
             .attr("fill", "#FFD479")
