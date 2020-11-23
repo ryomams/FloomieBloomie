@@ -25,14 +25,18 @@
             width: 100%;
         }
         #Title {
-            padding-top: 20px;
+            padding-top: 60px;
             font-weight: 700;
             padding-bottom: 20px;
+            text-align: center;
+            font-size:40px;
+            padding-left: 24px;
+            padding-right: 24px;
         }
         #Notes {
             padding-top: 30px;
-            padding-left: 30px;
-            padding-right: 30px;
+            padding-left: 50px;
+            padding-right: 50px;
             text-align: center;
         }
         #LeftButton {
@@ -48,10 +52,8 @@
         }
         #PutItHere {
             text-align:center;
-        }
-        #Title {
-            text-align: center;
-            font-size:40px;
+            padding-top: 5px;
+            padding-bottom: 10px;
         }
         #titlebar {
             font-weight:700;
@@ -85,63 +87,103 @@
     </style>
 </head>
 <body>
-    <div id="titlebar">FloomieBloomie 1.0<span style="float:right;"><a href="https://github.com/ryomams/FloomieBloomie"><img src="assets/gh.png" style="padding-right: 12px;" /></a></span></div>
+    <div id="titlebar">FloomieBloomie<span style="float:right;"><a href="https://github.com/ryomams/FloomieBloomie"><img src="assets/gh.png" style="padding-right: 12px;" /></a></span></div>
     <div id="subsubtitlebar">Help | <a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;">Petals: 0  |  Mood: Awful  |  Significance: Momentous</span></div>
-    <table id="code">
-        <div id="Title">Relaxed for much longer than I would have liked to</div>
-        <tr>
-            <td><img id="LeftButton" src="assets/cleft.svg" style="padding:5px;" /></td>
-            <td id="PutItHere"><!-- SVG Will Generate Here --></td>
-            <td><img id="RightButton" src="assets/cright.svg" style="padding:5px;" /></td>
-        </tr>
-    </table>
+    <div id="Title">Relaxed for much longer than I would have liked to</div>
+    <div id="PutItHere"><!-- SVG Will Generate Here --></div>
     <div id="Notes"><b>Notes</b><br /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus turpis ut arcu auctor, ac sodales diam lobortis. Integer et nunc lectus. Suspendisse convallis orci eget sem rutrum cursus. Sed eu erat nec augue pharetra imperdiet id a justo. Etiam aliquam, nibh at luctus pellentesque, orci ligula mollis dolor, at condimentum dui lacus vel magna. Phasellus finibus viverra mauris gravida egestas. Nullam sed metus et nunc elementum condimentum.</p></div> 
     <div id="subtitlebar">By Nishant Suria and <a href="https://ryoma.ms" style="color:#fff;">Ryoma Marta-Sugawara</a><span style="float:right; padding-right:24px;">For <a href="https://www.ucsc.edu/" style="color:#fff;">UCSC</a>'s <a href="https://catalog.ucsc.edu/en/Current/General-Catalog/Courses/CMPM-Computational-Media/Lower-Division/CMPM-35" style="color:#fff;">CMPM 35</a></span></div>
     <script>
 
         //ui elements
+        console.log("I feel like I'm going insane rn");
 
-        const svg = d3.select("#PutItHere").append("svg")
-            .attr("width", 600)
+        let svg = d3.select("#PutItHere").append("svg")
+            .attr("width", 900)
             .attr("height", 600)
-            .style("background-color", "#FFFAFF");
+            .style("background-color", "#FFCAD3");
         
-        const circle_Bound = svg.append("circle")
+        let circle_Bound = svg.append("circle")
             .attr("fill", "#AAA")
-            .attr("cx", 300)
+            .attr("cx", 300 + 150)
             .attr("cy", 300)
-            .attr("r", 300);
+            .attr("r", 300)
+            .on("mouseover", printDumbShit());
 
-
-        const circle = svg.append("circle")
+        let circle = svg.append("circle")
             .attr("fill", "#FFD479")
             .attr("stroke-width", 3)
             .attr("stroke", "#000")
-            .attr("cx", 300)
+            .attr("cx", 300 + 150)
             .attr("cy", 300)
             .attr("r", 50);
+
+        let circleRight = svg.append("circle")
+            .attr("fill", "#FFA3B6")
+            .attr("cx", 850)
+            .attr("cy", 300)
+            .attr("r", 50);
+
+        let circleLeft = svg.append("circle")
+            .attr("fill", "#FFA3B6")
+            .attr("cx", 50)
+            .attr("cy", 300)
+            .attr("r", 50);
+
+        let arrowLeft = svg.append("image")
+            .attr("href", "assets/cleft.svg")
+            .attr("x", 0)
+            .attr("y", 250)
+            .attr("width", "100")
+            .attr("height", "100");
+
+        let arrowRight = svg.append("image")
+            .attr("href", "assets/cright.svg")
+            .attr("x", 800)
+            .attr("y", 250)
+            .attr("width", "100")
+            .attr("height", "100");
+
+        /*const arrowLeft = svg.append("image")
+            .attr("href", "assets/cleft.svg")
+            .attr("x", 20)
+            .attr("y", 250)
+            .attr("width", "100")
+            .attr("height", "100");*/
 
         //text elements
 
         let text_Date = svg.append("text")
-            .attr("x", 264)
+            .attr("x", 264 + 150)
             .attr("y", 300)
             .attr("font-family", "Courier New")
             .attr("font-size", "25px")
             .attr("font-weight", "bold")
             .attr("fill", "black")
-            .text("00/00")
+            .text("00/00");
 
         let text_Year = svg.append("text")
-            .attr("x", 276)
+            .attr("x", 276 + 150)
             .attr("y", 327)
             .attr("font-family", "Courier New")
             .attr("font-size", "20px")
             .attr("font-weight", "italics")
             .attr("fill", "black")
-            .text("2020")
+            .text("2020");
 
-    
+        function printDumbShit() {
+            console.log("Dumb Shit!");
+        }
+
+        /*TODO:
+                -Animate circles on hover
+                -Figure out clickiness
+                -Load Data
+                -Split Data by day
+                -Combine Nishant's code with mine
+
+
+        */
 
     </script>
 </body>
