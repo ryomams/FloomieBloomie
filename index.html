@@ -4,10 +4,24 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <!-- <script src="index.js"></script> -->
     <title>FloomieBloomie</title>
+    <style>
+        html, body, #code {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        #code td {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <table id="code"><tr><td></td></tr></table>
     <script>
-        const svg = d3.select("body").append("svg")
+        const svg = d3.select("td").append("svg")
             .attr("width", 900)
             .attr("height", 900)
             .style("background-color", "#CCC");
