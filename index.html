@@ -6,44 +6,96 @@
     <title>FloomieBloomie 1.0</title>
     <link rel="icon" type="image/png" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/271/cherry-blossom_1f338.png"/>
     <style>
-        html, body, #code {
-            height: 100%;
-            width: 100%;
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+        html, body {
             margin: 0;
             padding: 0;
             border: 0;
-            background-color: #FFFAFF;
+            background-color: #FFCAD3;
+            font-family: 'Nunito';
         }
-        #code td {
+        table, tr, td {
+            border: 1px solid black;
             vertical-align: middle;
+        }
+        table {
+            width: 100%;
+        }
+        #Title {
+            padding-top: 20px;
+            font-weight: 700;
+            padding-bottom: 20px;
+        }
+        #Notes {
+            padding-top: 30px;
+            padding-left: 30px;
+            padding-right: 30px;
             text-align: center;
         }
+        #LeftButton {
+            text-align: left;
+        }
+        #RightButton {
+            text-align: right;
+        }
+        #Notes {
+            text-align: center;
+            /*padding-left:50px;
+            padding-right:50px;*/
+        }
+        #PutItHere {
+            text-align:center;
+        }
+        #Title {
+            text-align: center;
+            font-size:40px;
+        }
+        #titlebar {
+            font-weight:700;
+            font-size:25px;
+            background-color: #FF7F9A;
+            padding-top: 12px;
+            padding-left: 12px;
+            padding-bottom: 12px;
+        }
+        #subsubtitlebar {
+            background-color: #FFA3B6;
+            padding-top: 12px;
+            padding-left: 24px;
+            padding-right: 24px;
+            padding-bottom: 12px;
+        }
+        #subtitlebar {
+            padding: 12px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
         svg {
-            width: auto;
+           /* width: auto;
             height: auto;
             max-width: 100%;
-            max-height: 100%;
+            max-height: 100%;*/
         }
     </style>
 </head>
 <body>
+    <div id="titlebar">FloomieBloomie 1.0<span style="float:right;"><a href="https://github.com/ryomams/FloomieBloomie"><img src="assets/gh.png" style="padding-right: 12px;" /></a></span></div>
+    <div id="subsubtitlebar">Help | <a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;">Petals: 0  |  Mood: Awful  |  Significance: Momentous</span></div>
     <table id="code">
+        <div id="Title">Relaxed for much longer than I would have liked to</div>
         <tr>
-            <td id="title">Title</td>
-            <td>Title</td>
-            <td>Title</td>
-        </tr>
-        <tr>
-            <td>button</td>
-            <td id="PutItHere"><!-- SVG Will Generate Here --> </td>
-            <td>button2</td>
-        </tr>
-        <tr>
-            <td>Notes</td>
-            <td>Notes</td>
-            <td>Notes</td>
+            <td><img id="LeftButton" src="assets/cleft.svg" style="padding:5px;" /></td>
+            <td id="PutItHere"><!-- SVG Will Generate Here --></td>
+            <td><img id="RightButton" src="assets/cright.svg" style="padding:5px;" /></td>
         </tr>
     </table>
+    <div id="Notes"><b>Notes</b><br /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus turpis ut arcu auctor, ac sodales diam lobortis. Integer et nunc lectus. Suspendisse convallis orci eget sem rutrum cursus. Sed eu erat nec augue pharetra imperdiet id a justo. Etiam aliquam, nibh at luctus pellentesque, orci ligula mollis dolor, at condimentum dui lacus vel magna. Phasellus finibus viverra mauris gravida egestas. Nullam sed metus et nunc elementum condimentum.</p></div> 
+    <div id="subtitlebar">By Nishant Suria and <a href="https://ryoma.ms" style="color:#fff;">Ryoma Marta-Sugawara</a><span style="float:right; padding-right:24px;">For <a href="https://www.ucsc.edu/" style="color:#fff;">UCSC</a>'s <a href="https://catalog.ucsc.edu/en/Current/General-Catalog/Courses/CMPM-Computational-Media/Lower-Division/CMPM-35" style="color:#fff;">CMPM 35</a></span></div>
     <script>
 
         //ui elements
@@ -51,7 +103,7 @@
         const svg = d3.select("#PutItHere").append("svg")
             .attr("width", 600)
             .attr("height", 600)
-            .style("background-color", "#CCC");
+            .style("background-color", "#FFFAFF");
         
         const circle_Bound = svg.append("circle")
             .attr("fill", "#AAA")
