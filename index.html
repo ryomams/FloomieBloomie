@@ -27,17 +27,36 @@
     </style>
 </head>
 <body>
-    <table id="code"><tr><td></td></tr></table>
+    <table id="code">
+        <tr>
+            <td id="title">Title</td>
+            <td>Title</td>
+            <td>Title</td>
+        </tr>
+        <tr>
+            <td>button</td>
+            <td id="PutItHere"><!-- SVG Will Generate Here --> </td>
+            <td>button2</td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td>Notes</td>
+            <td>Notes</td>
+        </tr>
+    </table>
     <script>
-        const svg = d3.select("td").append("svg")
-            .attr("width", 900)
-            .attr("height", 900)
+
+        //ui elements
+
+        const svg = d3.select("#PutItHere").append("svg")
+            .attr("width", 600)
+            .attr("height", 600)
             .style("background-color", "#CCC");
         
         const circle_Bound = svg.append("circle")
             .attr("fill", "#AAA")
-            .attr("cx", 450)
-            .attr("cy", 450)
+            .attr("cx", 300)
+            .attr("cy", 300)
             .attr("r", 300);
 
 
@@ -45,14 +64,29 @@
             .attr("fill", "#FFD479")
             .attr("stroke-width", 3)
             .attr("stroke", "#000")
-            .attr("cx", 450)
-            .attr("cy", 450)
+            .attr("cx", 300)
+            .attr("cy", 300)
             .attr("r", 50);
 
-        /*const text_Date = svg.append("text")
-            .attr("x", 400)
+        //text elements
+
+        let text_Date = svg.append("text")
+            .attr("x", 264)
             .attr("y", 300)
-            .attr*/
+            .attr("font-family", "Courier New")
+            .attr("font-size", "25px")
+            .attr("font-weight", "bold")
+            .attr("fill", "black")
+            .text("00/00")
+
+        let text_Year = svg.append("text")
+            .attr("x", 276)
+            .attr("y", 327)
+            .attr("font-family", "Courier New")
+            .attr("font-size", "20px")
+            .attr("font-weight", "italics")
+            .attr("fill", "black")
+            .text("2020")
 
     
 
