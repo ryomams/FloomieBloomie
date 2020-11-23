@@ -1,6 +1,7 @@
 # FloomieBloomie
 Log your days in a garden of flowers. Made for UCSC's CMPM 35.<br>
-By Ryoma Marta-Sugawara and Nishant Suria. 
+By Ryoma Marta-Sugawara and Nishant Suria.<br>
+View it live at https://ryoma.ms/FloomieBloomie 
 
 ## Our Intentions & Goals
 
