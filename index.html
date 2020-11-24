@@ -94,13 +94,60 @@
     <div id="Notes"><b>Notes</b><br /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus turpis ut arcu auctor, ac sodales diam lobortis. Integer et nunc lectus. Suspendisse convallis orci eget sem rutrum cursus. Sed eu erat nec augue pharetra imperdiet id a justo. Etiam aliquam, nibh at luctus pellentesque, orci ligula mollis dolor, at condimentum dui lacus vel magna. Phasellus finibus viverra mauris gravida egestas. Nullam sed metus et nunc elementum condimentum.</p></div> 
     <div id="subtitlebar">By <a href="https://github.com/NSDawn" style="color: #fff">Nishant Suria</a> and <a href="https://ryoma.ms" style="color:#fff;">Ryoma Marta-Sugawara</a><span style="float:right; padding-right:24px;">For <a href="https://www.ucsc.edu/" style="color:#fff;">UCSC</a>'s <a href="https://catalog.ucsc.edu/en/Current/General-Catalog/Courses/CMPM-Computational-Media/Lower-Division/CMPM-35" style="color:#fff;">CMPM 35</a></span></div>
     <script>
+        class Vector2 {
+        constructor(in_a, in_b, in_type = 'rect') {
+        if (in_type == 'rect') {
+            this.x = in_a;
+            this.y = in_b;
+            this.r = Math.sqrt(this.x ^ 2 + this.y ^ 2);
+            this.theta = Math.atan(this.y / this.x);
+        }
+        else if (in_type == 'polar') {
+            this.r = in_a;
+            this.theta = in_b;
+            this.x = this.r * Math.cos(in_b);
+            this.y = this.r * Math.sin(this.theta);
+            this.cx = this.x + CTR.x;
+            this.cy = this.y + CTR.y;
+                }
+            }
+        }
+        // fn that formats inputs into the form that path() uses
+        function p(str1, str2, str3 = "", str4 = "", str5 = "", str6 = "", str7 = "", str8 = "") { 
+            let output = "";
+            output += str1; output += " "; output += str2;
+            if (str3 != "") {
+              output += " "; output += str3;
+            }
+            if (str4 != "") {
+              output += " "; output += str4;
+            }
+            if (str5 != "") {
+              output += " "; output += str5;
+            }
+            if (str6 != "") {
+              output += " "; output += str6;
+            }
+            if (str7 != "") {
+                     output += " "; output += str7;
+            }
+                   if (str8 != "") {
+              output += " "; output += str8;
+            }
+            return output;
+          }
+
+        const s = " ";
+        const PI = Math.PI;
+        // inititalization of value (helps with scaling idek)
+        const cs = new Vector2(900, 600, 'rect'); // cs = canvas_size
 
         //ui elements
         console.log("I feel like I'm going insane rn");
 
         let svg = d3.select("#PutItHere").append("svg")
-            .attr("width", 900)
-            .attr("height", 600)
+            .attr("width", cs.x)
+            .attr("height", cs.y)
             .style("background-color", "#FFCAD3");
         
         let circle_Bound = svg.append("circle")
@@ -124,27 +171,33 @@
             .attr("fill", "#FFA3B6")
             .attr("cx", 850)
             .attr("cy", 300)
-            .attr("r", 50);
+            .attr("r", 50)
+            .on("mouseover", eventMouseoverButton)
+            .on("mouseout", eventMouseoutButton);
 
         let circleLeft = svg.append("circle")
             .attr("fill", "#FFA3B6")
             .attr("cx", 50)
             .attr("cy", 300)
-            .attr("r", 50);
+            .attr("r", 50)
+            .on("mouseover", eventMouseoverButton)
+            .on("mouseout", eventMouseoutButton);
 
-        let arrowLeft = svg.append("image")
+        /*let arrowLeft = svg.append("image")
             .attr("href", "assets/cleft.svg")
             .attr("x", 0)
             .attr("y", 250)
             .attr("width", "100")
-            .attr("height", "100");
+            .attr("height", "100")
+            .on("mouseover", printDumbShit);
 
         let arrowRight = svg.append("image")
             .attr("href", "assets/cright.svg")
             .attr("x", 800)
             .attr("y", 250)
             .attr("width", "100")
-            .attr("height", "100");
+            .attr("height", "100")
+            .on("mouseover", eventMouseover);*/
 
         /*const arrowLeft = svg.append("image")
             .attr("href", "assets/cleft.svg")
@@ -172,9 +225,30 @@
             .attr("font-weight", "italics")
             .attr("fill", "black")
             .text("2020");
+        
+        // petal things
+        const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
+        const ENDPT = new Vector2(300, PI, 'polar'); // change this
+        const COLOR = '#42f5c8'; 
+        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+        const petal = svg.append('path')
+          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+          .attr("stroke", COLOR)
+          .attr("stroke_width", "2")
+          .attr("fill", COLOR);
 
         function printDumbShit() {
             console.log("Floomie eats children!");
+        }
+
+        function eventMouseoverButton(d, i) {
+            d3.select(this).attr("fill", "#FFFFFF");
+        }
+        function eventMouseoutButton() {
+            d3.select(this).attr("fill", "#FFA3B6");
         }
 
         /*TODO:
