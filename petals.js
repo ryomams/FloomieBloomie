@@ -22,6 +22,17 @@ function init() {
     }
   }
   
+  class Petal {
+    constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff") {
+      this.title = in_title;
+      this.mood = in_mood;
+      this.significance = in_significance;
+      this.notes = in_notes;
+      this.color = in_color;
+      this.path; // used to assign a svg path to each petal
+    }
+  }
+  
   // fn that formats inputs into the form that path() uses
   function p(str1, str2, str3 = "", str4 = "", str5 = "", str6 = "", str7 = "", str8 = "") { 
     let output = "";
@@ -49,6 +60,7 @@ function init() {
 
   const s = " ";
   const PI = Math.PI;
+  const PHI = (1 + Math.sqrt(5)) / 2;
 
   // inititalization of value (helps with scaling idek)
   const cs = new Vector2(600, 600, 'rect'); // cs = canvas_size
@@ -60,19 +72,30 @@ function init() {
     .style("background-color", "#626262")
   ;
 
-  // petal things
+  // array of petals
+  let petals = [];
+
+  // garbage data for testing purposes
+  const garbagedata1 = new Petal("Snuggled a cone of human skin", 6, 4, "It was cute lmao.", "#ff641c");
+  petals.push(garbagedata1);
+  const garbagedata2 = new Petal("Licked my table", 1, 2, "Tasted like dust.", "#325478");
+  petals.push(garbagedata2);
+  const garbagedata3 = new Petal("死にたかった。", 0, 4, "誰もいない。彼女をください。", "#cf5fa8");
+  petals.push(garbagedata3);
+  
+  // assigning path shapes to elements in petals[]
   const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
-  const ENDPT = new Vector2(200, PI, 'polar'); // change this
-  const COLOR = '#42f5c8'; 
-  const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
-  const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
-  const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
-  const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
-  const petal = svg.append('path')
-    .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-    .attr("stroke", COLOR)
-    .attr("stroke_width", "2")
-    .attr("fill", COLOR)
-    .attr("on",print("goober"))
-  ;
+  for (let i = 0; i < petals.length; i++) {
+    const ENDPT = new Vector2(200, (((2/PHI) * i) % 2) * PI, 'polar'); // change the first value of Vector2 for size.
+    const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+    const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+    const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+    const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+    petals[i].path = svg.append('path')
+      .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+      .attr("stroke", petals[i].color)
+      .attr("stroke_width", "2")
+      .attr("fill", petals[i].color)
+    ;
+  }
 }
