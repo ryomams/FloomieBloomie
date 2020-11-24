@@ -100,9 +100,11 @@ function init() {
       ;
     }
     // constantly updating the elements in petals[]
-    var t = d3.timer(function(elapsed) {
+    let n;
+    let t = d3.timer(function(elapsed) {
+      n = (elapsed * ROTATION_SPEED);
       for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + elapsed * ROTATION_SPEED) % 2) * PI, 'polar');
+        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
         const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
         const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
         const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
