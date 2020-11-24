@@ -162,7 +162,6 @@
         const PETAL_SIZE = 300;
         const ROTATION_SPEED = 1/100000000;
 
-        let currentDay = "11/1";
         
         //ui elements
         console.log("I feel like I'm going insane rn");
@@ -201,6 +200,7 @@
             .attr("cy", 300)
             .attr("r", 50)
             .attr("opacity", 0.5)
+            .attr("class", "circleRight")
             .on("mouseover", eventMouseoverButton)
             .on("mousedown", eventMousedownButton)
             .on("mouseup", eventMouseoverButton)
@@ -212,6 +212,7 @@
             .attr("cy", 300)
             .attr("r", 50)
             .attr("opacity", 0.5)
+            .attr("class", "circleLeft")
             .on("mouseover", eventMouseoverButton)
             .on("mousedown", eventMousedownButton)
             .on("mouseup", eventMouseoverButton)
@@ -225,6 +226,7 @@
             .attr("height", "100");*/
 
         //text functions
+
         function setTitle(text) {
             let e = document.getElementById("Title");
             e.innerHTML = text;
@@ -265,6 +267,20 @@
         }
         function eventMousedownButton() {
             d3.select(this).attr("fill", "#FFFFFF");
+            buttonPressed = d3.select(this).attr("class");
+            if (buttonPressed == "CircleRight") {
+              dayIterator += 1;
+              if(dayIterator > (uniqueDates.length - 1)) {
+                dayIterator = 0;
+              }
+            } else {
+              dayIterator -= 1;
+              if (dayIterator < 0) {
+                dayIterator = uniqueDates.length - 1;
+              }
+
+            }
+            currentDay = uniqueDates[dayIterator];
         }
         function eventMouseoutButton() {
             d3.select(this).attr("fill", "#FFA3B6");
@@ -293,14 +309,23 @@
 
         //petal rendering
         let petals = [];
+        let dates = [];
+        let uniqueDates = [];
+        let currentDay;
+        let dayIterator;
 
   // csv parsing
   d3.csv("assets/data_clean.csv").then(function(data) {
     data_length = data.length;
     for (let i = 0; i < data.length; i++) {
       const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance), data[i].Date);
+      dates.push(data[i].Date);
+      currentDay = data[i].Date;
       petals.push(petal_data);
     }
+    uniqueDates = [...new Set(dates)];
+    dayIterator = uniqueDates.indexOf(currentDay);
+    console.log(uniqueDates);
     // setting the path shapes to the elements in petals[]
     for (let i = 0; i < petals.length; i++) {
       const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i)) * PI, 'polar');
@@ -317,6 +342,33 @@
         .on("mouseover", eventMouseoverPetal)
         .on("mouseout", eventMouseoutPetal)
       ;
+        //pistol elements
+
+        let circle = svg.append("circle")
+            .attr("fill", "#FFD479")
+            .attr("stroke-width", 3)
+            .attr("stroke", "#000")
+            .attr("cx", 300 + 150)
+            .attr("cy", 300)
+            .attr("r", 50);
+
+        let text_Date = svg.append("text")
+            .attr("x", 264 + 150)
+            .attr("y", 300)
+            .attr("font-family", "Courier New")
+            .attr("font-size", "25px")
+            .attr("font-weight", "bold")
+            .attr("fill", "black")
+            .text(currentDay);
+
+        let text_Year = svg.append("text")
+            .attr("x", 276 + 150)
+            .attr("y", 327)
+            .attr("font-family", "Courier New")
+            .attr("font-size", "20px")
+            .attr("font-weight", "italics")
+            .attr("fill", "black")
+            .text("2020");
     }
     // constantly updating the elements in petals[]
     let intervalsElapsed = 0;
@@ -335,7 +387,7 @@
           const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
           petals[i].path
             .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-            .attr("stroke", petals[i].color)
+            .attr("stroke", "#AAA")
             .attr("stroke_width", "2")
             .attr("fill", petals[i].color)
             .on("mouseover", eventMouseoverPetal)
@@ -350,7 +402,6 @@
           ;
         }
       }
-    }, 60);
         //pistol elements
 
         let circle = svg.append("circle")
@@ -368,7 +419,7 @@
             .attr("font-size", "25px")
             .attr("font-weight", "bold")
             .attr("fill", "black")
-            .text("00/00");
+            .text(currentDay);
 
         let text_Year = svg.append("text")
             .attr("x", 276 + 150)
@@ -378,6 +429,7 @@
             .attr("font-weight", "italics")
             .attr("fill", "black")
             .text("2020");
+    }, 60);
   }); 
         
         //assign a color to significance
@@ -421,6 +473,7 @@
 
 
         */
+
 
     </script>
 </body>
