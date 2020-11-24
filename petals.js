@@ -21,12 +21,13 @@ function init() {
   }
   
   class Petal {
-    constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff") {
+    constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff", in_date = "") {
       this.title = in_title;
       this.mood = in_mood;
       this.significance = in_significance;
       this.notes = in_notes;
       this.color = in_color;
+      this.date = in_date;
       this.path; // used to assign a svg path to each petal
     }
   }
@@ -59,6 +60,7 @@ function init() {
   const s = " ";
   const PI = Math.PI;
   const PHI = (1 + Math.sqrt(5)) / 2;
+  let currentDay = "11/1";
 
   // inititalization of value (helps with scaling idek)
   const cs = new Vector2(600, 600, 'rect'); // cs = canvas_size
@@ -80,7 +82,7 @@ function init() {
   d3.csv("data_clean.csv").then(function(data) {
     data_length = data.length;
     for (let i = 0; i < data.length; i++) {
-      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance));
+      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance), data[i].Date);
       petals.push(petal_data);
     }
     // setting the path shapes to the elements in petals[]
@@ -106,17 +108,24 @@ function init() {
       n = (intervalsElapsed * ROTATION_SPEED);
       m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
       for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
-        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
-        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
-        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
-        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
-        petals[i].path
-          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-          .attr("stroke", petals[i].color)
-          .attr("stroke_width", "2")
-          .attr("fill", petals[i].color)
-        ;
+        if (petals[i].date == currentDay) {
+          const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+          const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+          const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+          const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+          const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+          petals[i].path
+            .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+            .attr("stroke", petals[i].color)
+            .attr("stroke_width", "2")
+            .attr("fill", petals[i].color)
+          ;
+        } else {
+          petals[i].path
+            .attr("stroke", "rgba(0,0,0,0.0)")
+            .attr("fill", "rgba(0,0,0,0.0)")
+          ;
+        }
       }
     }, 60);
   }); 
