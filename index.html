@@ -88,7 +88,7 @@
 </head>
 <body>
     <div id="titlebar">FloomieBloomie<span style="float:right;"><a href="https://github.com/ryomams/FloomieBloomie"><img src="assets/gh.png" style="padding-right: 12px;" /></a></span></div>
-    <div id="subsubtitlebar"><a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;">Petals: <span id="htm_petals">None</span>  |  Mood: <span id="htm_mood">None</span>  |  Significance: <span id="htm_sig">None</span></span></div>
+    <div id="subsubtitlebar"><a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;"> Mood: <span id="htm_mood">None</span>  |  Significance: <span id="htm_sig">None</span></span></div>
     <div id="Title">Hover over a petal to see the activity it represents!</div>
     <div id="PutItHere"><!-- SVG Will Generate Here --></div>
     <div id="Notes"><b>Notes</b><br /><p id="Notes_Tofill">An activity's notes will appear here as you hover! You can click on the arrows to switch between days.</p></div> 
@@ -237,10 +237,6 @@
         function setDate(text) {
             text_Date.text(text);
         }
-        function setPetals(text) {
-            let e = document.getElementById("htm_petals");
-            e.innerHTML = text;
-        }
         function setMood(text) {
             let e = document.getElementById("htm_mood");
             e.innerHTML = text;
@@ -272,12 +268,20 @@
         }
 
         //petal event handlers
+        let petalIndex = 0;
         function eventMouseoverPetal() {
             d3.select(this).attr("opacity", 0.5);
-            console.log(d3.select(this));
+            console.log(d3.select(this).attr("who"));
+            ii = parseInt(d3.select(this).attr("who"));
+            setMood(petals[ii].mood);
+            setSignificance(petals[ii].significance);
+            setNotes(petals[ii].notes);
+            setTitle(petals[ii].title);
+            
         }
         function eventMouseoutPetal() {
             d3.select(this).attr("opacity", 1);
+
         }
 
         //petal rendering
@@ -302,6 +306,7 @@
         .attr("stroke", "#AAA")
         .attr("stroke_width", "2")
         .attr("fill", petals[i].color)
+        .attr("who", i)
         .on("mouseover", eventMouseoverPetal)
         .on("mouseout", eventMouseoutPetal)
       ;
@@ -336,13 +341,14 @@
         
       
     // constantly updating the elements in petals[]
+    //todo
     //let n;
     //let m;
     let t = d3.interval(function(elapsed) {
       //n = (elapsed * ROTATION_SPEED);
       //m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
-      for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+      /*for (let i = 0; i < petals.length; i++) {
+        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
         const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
         const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
         const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
@@ -353,7 +359,7 @@
           .attr("stroke_width", "2")
           .attr("fill", petals[i].color)
         ;
-      }
+      }*/
       
         //pistol elements
 
