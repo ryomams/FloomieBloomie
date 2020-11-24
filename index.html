@@ -117,13 +117,14 @@
 
         //our beautiful petals!
         class Petal {
-          constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff") {
+          constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff", in_date) {
             this.title = in_title;
             this.mood = in_mood;
             this.significance = in_significance;
             this.notes = in_notes;
             this.color = in_color;
             this.path; // used to assign a svg path to each petal
+            this.date = in_date; 
           }
         }
         
@@ -152,14 +153,16 @@
           return output;
         }
 
-        //some constants we'll be referencing
+        //some constants and variables we'll be referencing
         const s = " ";
         const PI = Math.PI;
         const PHI = (1 + Math.sqrt(5)) / 2;
         const cs = new Vector2(900, 600, 'rect'); // cs = canvas_size
         const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
         const PETAL_SIZE = 300;
-        const ROTATION_SPEED = 1/100000;
+        const ROTATION_SPEED = 1/100000000;
+
+        let currentDay = "11/1";
         
         //ui elements
         console.log("I feel like I'm going insane rn");
@@ -277,11 +280,15 @@
             setSignificance(petals[ii].significance);
             setNotes(petals[ii].notes);
             setTitle(petals[ii].title);
+            //setDate("butthole");
             
         }
         function eventMouseoutPetal() {
             d3.select(this).attr("opacity", 1);
-
+            setMood("X");
+            setSignificance("X");
+            setNotes("An activity's notes will appear here as you hover! You can click on the arrows to switch between days.");
+            setTitle("Hover over a petal!");
         }
 
         //petal rendering
@@ -291,7 +298,7 @@
   d3.csv("assets/data_clean.csv").then(function(data) {
     data_length = data.length;
     for (let i = 0; i < data.length; i++) {
-      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance));
+      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance), data[i].Date);
       petals.push(petal_data);
     }
     // setting the path shapes to the elements in petals[]
@@ -311,6 +318,39 @@
         .on("mouseout", eventMouseoutPetal)
       ;
     }
+    // constantly updating the elements in petals[]
+    let intervalsElapsed = 0;
+    let n = 0;
+    let m = 1;
+    let t = d3.interval(function(elapsed) {
+      intervalsElapsed += 1;
+      n = (intervalsElapsed * ROTATION_SPEED);
+      m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
+      for (let i = 0; i < petals.length; i++) {
+        if (petals[i].date == currentDay) {
+          const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+          const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+          const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+          const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+          const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+          petals[i].path
+            .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+            .attr("stroke", petals[i].color)
+            .attr("stroke_width", "2")
+            .attr("fill", petals[i].color)
+            .on("mouseover", eventMouseoverPetal)
+            .on("mouseout", eventMouseoutPetal)
+          ;
+        } else {
+          petals[i].path
+            .attr("stroke", "rgba(0,0,0,0.0)")
+            .attr("fill", "none")
+            .on("mouseover", printDumbShit)
+            .on("mouseout", printDumbShit)
+          ;
+        }
+      }
+    }, 60);
         //pistol elements
 
         let circle = svg.append("circle")
