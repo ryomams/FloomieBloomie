@@ -91,7 +91,7 @@
     <div id="subsubtitlebar">Help | <a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;">Petals: 0  |  Mood: Awful  |  Significance: Momentous</span></div>
     <div id="Title">Relaxed for much longer than I would have liked to</div>
     <div id="PutItHere"><!-- SVG Will Generate Here --></div>
-    <div id="Notes"><b>Notes</b><br /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus turpis ut arcu auctor, ac sodales diam lobortis. Integer et nunc lectus. Suspendisse convallis orci eget sem rutrum cursus. Sed eu erat nec augue pharetra imperdiet id a justo. Etiam aliquam, nibh at luctus pellentesque, orci ligula mollis dolor, at condimentum dui lacus vel magna. Phasellus finibus viverra mauris gravida egestas. Nullam sed metus et nunc elementum condimentum.</p></div> 
+    <div id="Notes"><b>Notes</b><br /><p id="Notes_Tofill">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus turpis ut arcu auctor, ac sodales diam lobortis. Integer et nunc lectus. Suspendisse convallis orci eget sem rutrum cursus. Sed eu erat nec augue pharetra imperdiet id a justo. Etiam aliquam, nibh at luctus pellentesque, orci ligula mollis dolor, at condimentum dui lacus vel magna. Phasellus finibus viverra mauris gravida egestas. Nullam sed metus et nunc elementum condimentum.</p></div> 
     <div id="subtitlebar">By <a href="https://github.com/NSDawn" style="color: #fff">Nishant Suria</a> and <a href="https://ryoma.ms" style="color:#fff;">Ryoma Marta-Sugawara</a><span style="float:right; padding-right:24px;">For <a href="https://www.ucsc.edu/" style="color:#fff;">UCSC</a>'s <a href="https://catalog.ucsc.edu/en/Current/General-Catalog/Courses/CMPM-Computational-Media/Lower-Division/CMPM-35" style="color:#fff;">CMPM 35</a></span></div>
     <script>
         class Vector2 {
@@ -159,20 +159,29 @@
         
         //svg.select(circle_Bound).on("mouseover", printDumbShit);
 
-        let circle = svg.append("circle")
-            .attr("fill", "#FFD479")
-            .attr("stroke-width", 3)
-            .attr("stroke", "#000")
-            .attr("cx", 300 + 150)
-            .attr("cy", 300)
-            .attr("r", 50);
+        let arrowLeft = svg.append("image")
+            .attr("href", "assets/cleft.svg")
+            .attr("x", 0)
+            .attr("y", 250)
+            .attr("width", "100")
+            .attr("height", "100");
+
+        let arrowRight = svg.append("image")
+            .attr("href", "assets/cright.svg")
+            .attr("x", 800)
+            .attr("y", 250)
+            .attr("width", "100")
+            .attr("height", "100");
 
         let circleRight = svg.append("circle")
             .attr("fill", "#FFA3B6")
             .attr("cx", 850)
             .attr("cy", 300)
             .attr("r", 50)
+            .attr("opacity", 0.5)
             .on("mouseover", eventMouseoverButton)
+            .on("mousedown", eventMousedownButton)
+            .on("mouseup", eventMouseoverButton)
             .on("mouseout", eventMouseoutButton);
 
         let circleLeft = svg.append("circle")
@@ -180,24 +189,11 @@
             .attr("cx", 50)
             .attr("cy", 300)
             .attr("r", 50)
+            .attr("opacity", 0.5)
             .on("mouseover", eventMouseoverButton)
+            .on("mousedown", eventMousedownButton)
+            .on("mouseup", eventMouseoverButton)
             .on("mouseout", eventMouseoutButton);
-
-        /*let arrowLeft = svg.append("image")
-            .attr("href", "assets/cleft.svg")
-            .attr("x", 0)
-            .attr("y", 250)
-            .attr("width", "100")
-            .attr("height", "100")
-            .on("mouseover", printDumbShit);
-
-        let arrowRight = svg.append("image")
-            .attr("href", "assets/cright.svg")
-            .attr("x", 800)
-            .attr("y", 250)
-            .attr("width", "100")
-            .attr("height", "100")
-            .on("mouseover", eventMouseover);*/
 
         /*const arrowLeft = svg.append("image")
             .attr("href", "assets/cleft.svg")
@@ -206,7 +202,37 @@
             .attr("width", "100")
             .attr("height", "100");*/
 
-        //text elements
+        
+        //set text to display relevant data
+        /*let element = document.getElementById("Title");
+        element.innerHTML = "Penis penis penis hehe";
+
+        element = document.getElementById("Notes_Tofill");
+        element.innerHTML = "Penis penis penis hehe";*/
+
+        // petal things
+        const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
+        const ENDPT = new Vector2(300, PI, 'polar'); // change this
+        const COLOR = '#42f5c8'; 
+        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+        const petal = svg.append('path')
+          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+          .attr("stroke", COLOR)
+          .attr("stroke_width", "2")
+          .attr("fill", COLOR);
+
+        //pistol elements
+
+        let circle = svg.append("circle")
+            .attr("fill", "#FFD479")
+            .attr("stroke-width", 3)
+            .attr("stroke", "#000")
+            .attr("cx", 300 + 150)
+            .attr("cy", 300)
+            .attr("r", 50);
 
         let text_Date = svg.append("text")
             .attr("x", 264 + 150)
@@ -225,26 +251,15 @@
             .attr("font-weight", "italics")
             .attr("fill", "black")
             .text("2020");
-        
-        // petal things
-        const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
-        const ENDPT = new Vector2(300, PI, 'polar'); // change this
-        const COLOR = '#42f5c8'; 
-        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
-        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
-        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
-        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
-        const petal = svg.append('path')
-          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-          .attr("stroke", COLOR)
-          .attr("stroke_width", "2")
-          .attr("fill", COLOR);
 
         function printDumbShit() {
             console.log("Floomie eats children!");
         }
 
         function eventMouseoverButton(d, i) {
+            d3.select(this).attr("fill", "#FF7F9A");
+        }
+        function eventMousedownButton(d, i) {
             d3.select(this).attr("fill", "#FFFFFF");
         }
         function eventMouseoutButton() {
