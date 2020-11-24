@@ -66,6 +66,7 @@ function init() {
   const cs = new Vector2(600, 600, 'rect'); // cs = canvas_size
   const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
   const PETAL_SIZE = 200;
+  const ROTATION_SPEED = 1/100000;
 
   // inititalization of svg object 
   const svg = d3.select("body").append("svg")
@@ -101,7 +102,7 @@ function init() {
     // constantly updating the elements in petals[]
     var t = d3.timer(function(elapsed) {
       for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + elapsed/10000) % 2) * PI, 'polar');
+        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + elapsed * ROTATION_SPEED) % 2) * PI, 'polar');
         const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
         const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
         const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
