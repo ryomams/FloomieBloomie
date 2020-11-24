@@ -73,6 +73,6 @@ function init() {
     .attr("stroke", COLOR)
     .attr("stroke_width", "2")
     .attr("fill", COLOR)
-    .attr("on")
+    .attr("on",print("goober"))
   ;
 }
