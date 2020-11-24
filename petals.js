@@ -75,13 +75,26 @@ function init() {
   // array of petals
   let petals = [];
 
-  // garbage data for testing purposes
+  // csv parsing
+  d3.csv("data_clean.csv").then(function(data) {
+    for (let i = 0; i < data.length; i++) {
+      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, '#cf5af8');
+      petals.push(petal_data);
+    }
+  }); 
+  
+
+  console.log(petals);
+  
+  // garbage data lmao
   const garbagedata1 = new Petal("Snuggled a cone of human skin", 6, 4, "It was cute lmao.", "#ff641c");
   petals.push(garbagedata1);
   const garbagedata2 = new Petal("Licked my table", 1, 2, "Tasted like dust.", "#325478");
   petals.push(garbagedata2);
   const garbagedata3 = new Petal("死にたかった。", 0, 4, "誰もいない。彼女をください。", "#cf5fa8");
   petals.push(garbagedata3);
+  const garbagedata4 = new Petal("eoawgeoiaeogaw", 2, 4, "fowamefemwpgegpegw", "cf5af8");
+  petals.push(garbagedata4); 
   
   // assigning path shapes to elements in petals[]
   const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
