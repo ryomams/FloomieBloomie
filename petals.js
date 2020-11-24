@@ -64,7 +64,7 @@ function init() {
   const cs = new Vector2(600, 600, 'rect'); // cs = canvas_size
   const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
   const PETAL_SIZE = 200;
-  const ROTATION_SPEED = 1/100000;
+  const ROTATION_SPEED = 1/1000;
 
   // inititalization of svg object 
   const svg = d3.select("body").append("svg")
@@ -98,10 +98,12 @@ function init() {
       ;
     }
     // constantly updating the elements in petals[]
-    let n;
-    let m;
-    let t = d3.timer(function(elapsed) {
-      n = (elapsed * ROTATION_SPEED);
+    let intervalsElapsed = 0;
+    let n = 0;
+    let m = 1;
+    let t = d3.interval(function(elapsed) {
+      intervalsElapsed += 1;
+      n = (intervalsElapsed * ROTATION_SPEED);
       m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
       for (let i = 0; i < petals.length; i++) {
         const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
@@ -116,7 +118,7 @@ function init() {
           .attr("fill", petals[i].color)
         ;
       }
-    }, 150);
+    }, 60);
   }); 
   
 
