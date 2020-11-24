@@ -283,30 +283,52 @@
         //petal rendering
         let petals = [];
 
-        // csv parsing
-        d3.csv("assets/data_clean.csv").then(function(data) {
-          data_length = data.length;
-          for (let i = 0; i < data.length; i++) {
-            const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance));
-            petals.push(petal_data);
-          }
-          // assigning path shapes to elements in petals[]
-          for (let i = 0; i < petals.length; i++) {
-            const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i) % 2) * PI, 'polar'); // change the first value of Vector2 for size.
-            const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
-            const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
-            const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
-            const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
-            petals[i].path = svg.append('path')
-              .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-              .attr("stroke", "#AAA")
-              .attr("stroke_width", "2")
-              .attr("fill", petals[i].color)
-              .on("mouseover", eventMouseoverPetal)
-              .on("mouseout", eventMouseoutPetal)
-            ;
-          }
-
+  // csv parsing
+  d3.csv("assets/data_clean.csv").then(function(data) {
+    data_length = data.length;
+    for (let i = 0; i < data.length; i++) {
+      const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance));
+      petals.push(petal_data);
+    }
+    // setting the path shapes to the elements in petals[]
+    for (let i = 0; i < petals.length; i++) {
+      const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i)) * PI, 'polar');
+      const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+      const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+      const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+      const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+      petals[i].path = svg.append('path')
+        .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+        .attr("stroke", petals[i].color)
+        .attr("stroke_width", "2")
+        .attr("fill", petals[i].color)
+        .on("mouseover", eventMouseoverPetal)
+        .on("mouseout", eventMouseoutPetal)
+      ;
+    }
+    // constantly updating the elements in petals[]
+    let n;
+    let t = d3.timer(function(elapsed) {
+      n = (elapsed * ROTATION_SPEED);
+      for (let i = 0; i < petals.length; i++) {
+        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+        petals[i].path
+          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+          .attr("stroke", petals[i].color)
+          .attr("stroke_width", "2")
+          .attr("fill", petals[i].color)
+          .on("mouseover", eventMouseoverPetal)
+          .on("mouseout", eventMouseoutPetal)
+        ;
+      }
+      
+    }, 150);
+  }); 
+        
         //pistol elements
 
         let circle = svg.append("circle")
@@ -334,8 +356,6 @@
             .attr("font-weight", "italics")
             .attr("fill", "black")
             .text("2020");
-
-        });
         
         //assign a color to significance
         function significanceColor(in_int) {
