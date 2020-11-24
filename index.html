@@ -260,16 +260,24 @@
             console.log("Floomie eats children!");
         }
 
-        //button functions
-
-        function eventMouseoverButton(d, i) {
+        //button event handlers
+        function eventMouseoverButton() {
             d3.select(this).attr("fill", "#FF7F9A");
         }
-        function eventMousedownButton(d, i) {
+        function eventMousedownButton() {
             d3.select(this).attr("fill", "#FFFFFF");
         }
         function eventMouseoutButton() {
             d3.select(this).attr("fill", "#FFA3B6");
+        }
+
+        //petal event handlers
+        function eventMouseoverPetal() {
+            d3.select(this).attr("opacity", 0.5);
+            console.log(d3.select(this));
+        }
+        function eventMouseoutPetal() {
+            d3.select(this).attr("opacity", 1);
         }
 
         //petal rendering
@@ -291,9 +299,11 @@
             const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
             petals[i].path = svg.append('path')
               .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-              .attr("stroke", petals[i].color)
+              .attr("stroke", "#AAA")
               .attr("stroke_width", "2")
               .attr("fill", petals[i].color)
+              .on("mouseover", eventMouseoverPetal)
+              .on("mouseout", eventMouseoutPetal)
             ;
           }
 
