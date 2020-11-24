@@ -1,5 +1,3 @@
-// https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Shapes
-
 function init() {
 
   // inititalization of new class 'Vector2', which stores an x and y
@@ -101,10 +99,12 @@ function init() {
     }
     // constantly updating the elements in petals[]
     let n;
+    let m;
     let t = d3.timer(function(elapsed) {
       n = (elapsed * ROTATION_SPEED);
+      m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
       for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+        const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
         const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
         const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
         const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
