@@ -96,6 +96,6 @@ function init() {
       .attr("stroke", petals[i].color)
       .attr("stroke_width", "2")
       .attr("fill", petals[i].color)
-  ;
+    ;
   }
 }
