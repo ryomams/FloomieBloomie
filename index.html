@@ -88,21 +88,21 @@
 </head>
 <body>
     <div id="titlebar">FloomieBloomie<span style="float:right;"><a href="https://github.com/ryomams/FloomieBloomie"><img src="assets/gh.png" style="padding-right: 12px;" /></a></span></div>
-    <div id="subsubtitlebar"><a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;"> Mood: <span id="htm_mood">None</span>  |  Significance: <span id="htm_sig">None</span></span></div>
+    <div id="subsubtitlebar"><a href="javascript:history.go(0)" style="color: #000;">Reload</a><span style="float:right;"> Mood: <span id="htm_mood">X</span>  |  Significance: <span id="htm_sig">X</span></span></div>
     <div id="Title">Hover over a petal to see the activity it represents!</div>
     <div id="PutItHere"><!-- SVG Will Generate Here --></div>
     <div id="Notes"><b>Notes</b><br /><p id="Notes_Tofill">An activity's notes will appear here as you hover! You can click on the arrows to switch between days.</p></div> 
     <div id="subtitlebar">By <a href="https://github.com/NSDawn" style="color: #fff">Nishant Suria</a> and <a href="https://ryoma.ms" style="color:#fff;">Ryoma Marta-Sugawara</a><span style="float:right; padding-right:24px;">For <a href="https://www.ucsc.edu/" style="color:#fff;">UCSC</a>'s <a href="https://catalog.ucsc.edu/en/Current/General-Catalog/Courses/CMPM-Computational-Media/Lower-Division/CMPM-35" style="color:#fff;">CMPM 35</a></span></div>
     <script>
         // inititalization of new class 'Vector2', which stores an x and y
-        //(makes it easy to do polar math)
+        //allows for data entry in cartesian or polar form, then automatically converts it during intialization.
         class Vector2 {
           constructor(in_a, in_b, in_type = 'rect') {
             if (in_type == 'rect') {
               this.x = in_a;
               this.y = in_b;
               this.r = Math.sqrt(this.x ^ 2 + this.y ^ 2);
-              this.theta = Math.atan(this.y / this.x);
+              this.theta = Math.atan(this.y / this.x); 
             }
             else if (in_type == 'polar') {
               this.r = in_a;
@@ -118,6 +118,7 @@
         //our beautiful petals!
         class Petal {
           constructor(in_title, in_mood, in_significance, in_notes = "", in_color = "#ffffff", in_date) {
+            //these are all the variables and pieces of data each petal will store
             this.title = in_title;
             this.mood = in_mood;
             this.significance = in_significance;
@@ -128,7 +129,7 @@
           }
         }
         
-        // fn that formats inputs into the form that path() uses
+        // function that formats inputs into the form that path() uses
         function p(str1, str2, str3 = "", str4 = "", str5 = "", str6 = "", str7 = "", str8 = "") { 
           let output = "";
           output += str1; output += " "; output += str2;
@@ -153,7 +154,7 @@
           return output;
         }
 
-        //some constants and variables we'll be referencing
+        //some constants we'll be referencing, so that we don't have to type them ALL THE TIME >:(
         const s = " ";
         const PI = Math.PI;
         const PHI = (1 + Math.sqrt(5)) / 2;
@@ -163,14 +164,16 @@
         const ROTATION_SPEED = 1/1000;
 
         
-        //ui elements
-        console.log("I feel like I'm going insane rn");
+        //remnants of an all-nighter:
+        //console.log("I feel like I'm going insane rn");
 
+        //let's make an svg!
         let svg = d3.select("#PutItHere").append("svg")
             .attr("width", cs.x)
             .attr("height", cs.y)
             .style("background-color", "#FFCAD3");
         
+        //the gray bg of the flower
         let circle_Bound = svg.append("circle")
             .attr("fill", "#AAA")
             .attr("cx", 300 + 150)
@@ -180,6 +183,7 @@
         
         //svg.select(circle_Bound).on("mouseover", printDumbShit);
 
+        //the little chevrons you see in the buttons.
         let arrowLeft = svg.append("image")
             .attr("href", "assets/cleft.svg")
             .attr("x", 0)
@@ -193,7 +197,7 @@
             .attr("y", 250)
             .attr("width", "100")
             .attr("height", "100");
-
+        //the actual buttons that you end up clicking on 
         let circleRight = svg.append("circle")
             .attr("fill", "#FFA3B6")
             .attr("cx", 850)
@@ -225,8 +229,7 @@
             .attr("width", "100")
             .attr("height", "100");*/
 
-        //text functions
-
+        //text functions to set html and svg text to certain things
         function setTitle(text) {
             let e = document.getElementById("Title");
             e.innerHTML = text;
@@ -251,12 +254,7 @@
             e.innerHTML = text;
         }
 
-        //functions
-
-        function formatDate(date) {
-            return("00/00");
-        }
-
+        //... and then there's this. ignore this. we're tired.
         function printDumbShit() {
             console.log("Floomie eats children!");
         }
@@ -268,15 +266,16 @@
         function eventMousedownButton() {
             d3.select(this).attr("fill", "#FFFFFF");
             buttonPressed = d3.select(this).attr("class");
+            //i screwed this logic up bad but it's 3:30 am and i don't care enough to fix it
             if (buttonPressed == "CircleRight") {
-              dayIterator += 1;
-              if(dayIterator > (uniqueDates.length - 1)) {
-                dayIterator = 0;
-              }
-            } else {
               dayIterator -= 1;
               if (dayIterator < 0) {
                 dayIterator = uniqueDates.length - 1;
+              }
+            } else {
+              dayIterator += 1;
+              if(dayIterator > (uniqueDates.length - 1)) {
+                dayIterator = 0;
               }
 
             }
@@ -286,7 +285,7 @@
             d3.select(this).attr("fill", "#FFA3B6");
         }
 
-        //petal event handlers
+        //petal event handlers... for handling the events of petals!
         let petalIndex = 0;
         function eventMouseoverPetal() {
             d3.select(this).attr("opacity", 0.5);
@@ -307,18 +306,20 @@
             setTitle("Hover over a petal!");
         }
 
-        //petal rendering
-        let petals = [];
-        let dates = [];
-        let uniqueDates = [];
-        let currentDay;
-        let dayIterator;
+        //some variables for petals uwu
+        let petals = []; //all the petals to render
+        let dates = []; //all the possible dates 
+        let uniqueDates = []; //a SET of dates
+        let currentDay; //what day should we display?
+        let dayIterator; //what day are we on in data?
 
-  // csv parsing
+  // csv parsing time!
   d3.csv("assets/data_clean.csv").then(function(data) {
     data_length = data.length;
     for (let i = 0; i < data.length; i++) {
+      //make me some petals
       const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance), data[i].Date);
+      //also up-date the DATES (haha get it cuz date)
       dates.push(data[i].Date);
       currentDay = data[i].Date;
       petals.push(petal_data);
@@ -326,13 +327,15 @@
     uniqueDates = [...new Set(dates)];
     dayIterator = uniqueDates.indexOf(currentDay);
     console.log(uniqueDates);
+
     // setting the path shapes to the elements in petals[]
     for (let i = 0; i < petals.length; i++) {
-      const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i)) * PI, 'polar');
+      const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i)) * PI, 'polar'); //we're mimicking the way plants make petals with phi!! (shoutouts to vi hart we love youuu)
       const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
       const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
       const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
       const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+      //create a petal shape that can be rendered at any angle
       petals[i].path = svg.append('path')
         .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
         .attr("stroke", "#AAA")
@@ -342,7 +345,7 @@
         .on("mouseover", eventMouseoverPetal)
         .on("mouseout", eventMouseoutPetal)
       ;
-        //pistol elements
+        //draw the pistol elements (where the date is)
 
         let circle = svg.append("circle")
             .attr("fill", "#FFD479")
@@ -370,7 +373,7 @@
             .attr("fill", "black")
             .text("2020");
     }
-    // constantly updating the elements in petals[]
+    // update the elements in petals[] and animate
     let intervalsElapsed = 0;
     let n = 0;
     let m = 1;
@@ -402,7 +405,7 @@
           ;
         }
       }
-        //pistol elements
+        //pistol elements... again
 
         let circle = svg.append("circle")
             .attr("fill", "#FFD479")
