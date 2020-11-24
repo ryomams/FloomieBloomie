@@ -65,6 +65,7 @@ function init() {
   // inititalization of value (helps with scaling idek)
   const cs = new Vector2(600, 600, 'rect'); // cs = canvas_size
   const CTR = new Vector2(cs.x/2, cs.y/2, 'rect');
+  const PETAL_SIZE = 200;
 
   // inititalization of svg object 
   const svg = d3.select("body").append("svg")
@@ -83,9 +84,9 @@ function init() {
       const petal_data = new Petal(data[i].Activity, data[i].Mood, data[i].Significance, data[i].Notes, significanceColor(data[i].Significance));
       petals.push(petal_data);
     }
-    // assigning path shapes to elements in petals[]
+    // setting the path shapes to the elements in petals[]
     for (let i = 0; i < petals.length; i++) {
-      const ENDPT = new Vector2(200, (((2/PHI) * i) % 2) * PI, 'polar'); // change the first value of Vector2 for size.
+      const ENDPT = new Vector2(PETAL_SIZE, (((2/PHI) * i)) * PI, 'polar');
       const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
       const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
       const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
@@ -97,7 +98,24 @@ function init() {
         .attr("fill", petals[i].color)
       ;
     }
+    // constantly updating the elements in petals[]
+    var t = d3.timer(function(elapsed) {
+      for (let i = 0; i < petals.length; i++) {
+        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + elapsed/10000) % 2) * PI, 'polar');
+        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+        petals[i].path
+          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+          .attr("stroke", petals[i].color)
+          .attr("stroke_width", "2")
+          .attr("fill", petals[i].color)
+        ;
+      }
+    }, 150);
   }); 
+  
 
   function significanceColor(in_int) {
     let output;
