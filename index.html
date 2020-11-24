@@ -299,36 +299,13 @@
       const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
       petals[i].path = svg.append('path')
         .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-        .attr("stroke", petals[i].color)
+        .attr("stroke", "#AAA")
         .attr("stroke_width", "2")
         .attr("fill", petals[i].color)
         .on("mouseover", eventMouseoverPetal)
         .on("mouseout", eventMouseoutPetal)
       ;
     }
-    // constantly updating the elements in petals[]
-    let n;
-    let t = d3.timer(function(elapsed) {
-      n = (elapsed * ROTATION_SPEED);
-      for (let i = 0; i < petals.length; i++) {
-        const ENDPT = new Vector2(PETAL_SIZE, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
-        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
-        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
-        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
-        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
-        petals[i].path
-          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
-          .attr("stroke", petals[i].color)
-          .attr("stroke_width", "2")
-          .attr("fill", petals[i].color)
-          .on("mouseover", eventMouseoverPetal)
-          .on("mouseout", eventMouseoutPetal)
-        ;
-      }
-      
-    }, 150);
-  }); 
-        
         //pistol elements
 
         let circle = svg.append("circle")
@@ -356,6 +333,59 @@
             .attr("font-weight", "italics")
             .attr("fill", "black")
             .text("2020");
+        
+      
+    // constantly updating the elements in petals[]
+    //let n;
+    //let m;
+    let t = d3.interval(function(elapsed) {
+      //n = (elapsed * ROTATION_SPEED);
+      //m = (Math.sin((100 * n) % (2*PI)) * 0.02) + 1;
+      for (let i = 0; i < petals.length; i++) {
+        const ENDPT = new Vector2(PETAL_SIZE * m, ((((2/PHI) * i) + n) % 2) * PI, 'polar');
+        const UNDERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta - PI/6, 'polar'); 
+        const UNDERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta - PI/6, 'polar'); 
+        const OVERMIDPT1 = new Vector2(ENDPT.r / 3, ENDPT.theta + PI/6, 'polar');
+        const OVERMIDPT2 = new Vector2(ENDPT.r * 2/3, ENDPT.theta + PI/6, 'polar');
+        petals[i].path
+          .attr("d", p("M", CTR.x, CTR.y) + s + p("C", UNDERMIDPT1.cx, UNDERMIDPT1.cy, UNDERMIDPT2.cx, UNDERMIDPT2.cy, ENDPT.cx, ENDPT.cy) + s +  p("C", OVERMIDPT2.cx, OVERMIDPT2.cy, OVERMIDPT1.cx, OVERMIDPT1.cy, CTR.x, CTR.y))
+          .attr("stroke", "#AAA")
+          .attr("stroke_width", "2")
+          .attr("fill", petals[i].color)
+        ;
+      }
+      
+        //pistol elements
+
+        let circle = svg.append("circle")
+            .attr("fill", "#FFD479")
+            .attr("stroke-width", 3)
+            .attr("stroke", "#000")
+            .attr("cx", 300 + 150)
+            .attr("cy", 300)
+            .attr("r", 50);
+
+        let text_Date = svg.append("text")
+            .attr("x", 264 + 150)
+            .attr("y", 300)
+            .attr("font-family", "Courier New")
+            .attr("font-size", "25px")
+            .attr("font-weight", "bold")
+            .attr("fill", "black")
+            .text("00/00");
+
+        let text_Year = svg.append("text")
+            .attr("x", 276 + 150)
+            .attr("y", 327)
+            .attr("font-family", "Courier New")
+            .attr("font-size", "20px")
+            .attr("font-weight", "italics")
+            .attr("fill", "black")
+            .text("2020");
+        
+      
+    }, 90);
+  }); 
         
         //assign a color to significance
         function significanceColor(in_int) {
