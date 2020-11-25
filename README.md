@@ -5,7 +5,7 @@ View it live at https://ryoma.ms/FloomieBloomie
 
 ## Our Intentions & Goals
 
-FloomieBloomie takes a set of activities performed in a day and displays them in a radial flower chart (as pictured below).<br><br>
+FloomieBloomie takes a set of activities performed in a day and displays them in a radial flower chart using D3 (as pictured below).<br><br>
 Each `flower`, which represent a day, is made up of `petals`, which each represent user-provided activities. Each `petal`, or activity, has a `significance-lvl`, a `mood`, and some `notes` attached.<br>
 - `significance-lvl` is a rating, 0-6, of how significant a user thinks that activity was. (6 is momentous, 3 is medium, and 0 is neat.) This is represented in each petal's size.
 - `mood` is a rating, 0-4, of how a user felt about that activity. (4 is elated, 2 is neutral, and 0 is awful.) This is represented in each petal's color.
